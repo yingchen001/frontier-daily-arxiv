@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Frontier Daily arXiv · 2026-10-12</title>
+<style>
+  :root {
+    --bg:#f7f8fa; --card:#fff; --fg:#1a1a1a; --muted:#6b7280;
+    --border:#e5e7eb; --accent:#2563eb; --tag:#eef2ff; --tag-fg:#4338ca;
+    --kw:#ecfdf5; --kw-fg:#047857;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0f1115; --card:#1a1d24; --fg:#e5e7eb; --muted:#9ca3af;
+            --border:#2a2e37; --accent:#60a5fa; --tag:#1e293b; --tag-fg:#93c5fd;
+            --kw:#0f2a20; --kw-fg:#6ee7b7; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif; }
+  .container { max-width:1280px; margin:0 auto; padding:20px 18px 60px; }
+  header h1 { margin:0; font-size:22px; }
+  header .meta { color:var(--muted); font-size:13px; }
+  .controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:14px 0 6px; }
+  input[type=search], select { background:var(--card); color:var(--fg); border:1px solid var(--border);
+         border-radius:8px; padding:7px 11px; font-size:14px; }
+  input[type=search] { flex:1; min-width:220px; }
+  .filter-group { margin:8px 0; }
+  .filter-group .label { font-size:12px; color:var(--muted); margin-right:6px; }
+  .tabs { display:inline-flex; gap:6px; flex-wrap:wrap; }
+  .tab { padding:4px 11px; border:1px solid var(--border); border-radius:16px; cursor:pointer;
+         font-size:12.5px; background:var(--card); color:var(--fg); user-select:none; }
+  .tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .tab.kw.active { background:var(--kw-fg); border-color:var(--kw-fg); }
+  .meta-line { color:var(--muted); font-size:13px; margin:10px 0; }
+
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(400px, 1fr)); gap:16px; align-items:start; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px; cursor:pointer; transition:border-color .15s, box-shadow .15s; }
+  .card:hover { border-color:var(--accent); box-shadow:0 2px 12px rgba(37,99,235,.12); }
+  .card.top { border-top:3px solid #f59e0b; }
+  .card h3 { margin:0 0 8px; font-size:16px; line-height:1.4; }
+  .card h3 .rank { color:var(--accent); font-weight:700; margin-right:5px; }
+  .card h3 .badge { font-size:10px; background:#fef3c7; color:#92660a; border-radius:5px; padding:1px 6px; margin-right:5px; vertical-align:middle; }
+  .thumb { width:100%; max-height:190px; object-fit:cover; border-radius:8px; margin-bottom:10px; border:1px solid var(--border); }
+  .sec { font-size:13.5px; line-height:1.65; margin:6px 0; }
+  .sec b { color:var(--accent); margin-right:4px; }
+  .sec ul { margin:3px 0 3px 18px; padding:0; }
+  .summary { font-size:13.5px; line-height:1.65; color:var(--fg); margin:8px 0; }
+  .row { color:var(--muted); font-size:12px; margin:3px 0; }
+  .tags span { display:inline-block; background:var(--tag); color:var(--tag-fg); border-radius:5px; padding:1px 7px; font-size:11px; margin:2px 4px 2px 0; }
+  .kws span { display:inline-block; background:var(--kw); color:var(--kw-fg); border-radius:5px; padding:1px 7px; font-size:11px; margin:2px 4px 2px 0; }
+  .stats { color:var(--muted); font-size:12px; margin:6px 0; }
+  .stats b { color:var(--fg); }
+  .links a { color:var(--accent); text-decoration:none; margin-right:12px; font-size:13px; cursor:pointer; }
+  .empty { text-align:center; color:var(--muted); padding:40px; grid-column:1/-1; }
+  .card h3 .title-link { cursor:pointer; }
+  .card h3 .title-link:hover { color:var(--accent); text-decoration:underline; }
+
+  /* 详情弹窗 */
+  .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:100; padding:28px 16px; overflow:auto; }
+  .modal.open { display:block; }
+  .modal-box { background:var(--card); color:var(--fg); max-width:920px; margin:0 auto; border-radius:14px; padding:22px 26px; position:relative; box-shadow:0 12px 40px rgba(0,0,0,.3); }
+  .modal-close { position:absolute; top:12px; right:16px; background:none; border:none; font-size:28px; line-height:1; color:var(--muted); cursor:pointer; }
+  .modal-box h2 { margin:0 30px 12px 0; font-size:20px; line-height:1.45; }
+  .modal-box .abs { font-size:14px; line-height:1.75; white-space:pre-wrap; background:var(--bg);
+        border-left:3px solid var(--accent); padding:12px 14px; border-radius:8px; margin:6px 0 16px; }
+  .modal-box .lbl { font-weight:700; margin:16px 0 6px; font-size:14px; }
+  .pdfwrap { width:100%; height:600px; border:1px solid var(--border); border-radius:8px; overflow:hidden; background:var(--bg); }
+  .pdfwrap iframe { width:100%; height:100%; border:0; }
+  .pdfhint { font-size:12px; color:var(--muted); margin-top:6px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🚀 Frontier Daily arXiv</h1>
+    <div class="meta">2026-10-12 ｜ 候选 11 篇 ｜ 生成于 2026-10-13 13:49</div>
+  </header>
+
+  <div class="controls">
+    <select id="dateSel" onchange="location.href=this.value+'.html'" title="切换日期">
+<option value="2026-10-12" selected>2026-10-12</option><option value="2026-10-11">2026-10-11</option><option value="2026-10-08">2026-10-08</option><option value="2026-10-07">2026-10-07</option><option value="2026-10-06">2026-10-06</option><option value="2026-10-05">2026-10-05</option><option value="2026-10-04">2026-10-04</option><option value="2026-10-01">2026-10-01</option><option value="2026-09-30">2026-09-30</option><option value="2026-09-29">2026-09-29</option><option value="2026-09-28">2026-09-28</option><option value="2026-09-27">2026-09-27</option><option value="2026-09-24">2026-09-24</option><option value="2026-09-23">2026-09-23</option><option value="2026-09-22">2026-09-22</option><option value="2026-09-21">2026-09-21</option><option value="2026-09-20">2026-09-20</option><option value="2026-09-17">2026-09-17</option><option value="2026-09-16">2026-09-16</option><option value="2026-09-15">2026-09-15</option><option value="2026-09-14">2026-09-14</option><option value="2026-09-13">2026-09-13</option><option value="2026-09-10">2026-09-10</option><option value="2026-09-09">2026-09-09</option><option value="2026-09-08">2026-09-08</option><option value="2026-09-07">2026-09-07</option><option value="2026-09-06">2026-09-06</option><option value="2026-09-03">2026-09-03</option><option value="2026-09-02">2026-09-02</option><option value="2026-09-01">2026-09-01</option><option value="2026-08-31">2026-08-31</option><option value="2026-08-30">2026-08-30</option><option value="2026-08-27">2026-08-27</option><option value="2026-08-26">2026-08-26</option><option value="2026-08-25">2026-08-25</option><option value="2026-08-24">2026-08-24</option><option value="2026-08-23">2026-08-23</option><option value="2026-08-20">2026-08-20</option><option value="2026-08-19">2026-08-19</option><option value="2026-08-18">2026-08-18</option><option value="2026-08-17">2026-08-17</option><option value="2026-08-16">2026-08-16</option><option value="2026-08-13">2026-08-13</option><option value="2026-08-12">2026-08-12</option><option value="2026-08-11">2026-08-11</option><option value="2026-08-10">2026-08-10</option><option value="2026-08-09">2026-08-09</option><option value="2026-08-06">2026-08-06</option><option value="2026-08-05">2026-08-05</option><option value="2026-08-04">2026-08-04</option><option value="2026-08-03">2026-08-03</option><option value="2026-08-02">2026-08-02</option><option value="2026-07-30">2026-07-30</option><option value="2026-07-29">2026-07-29</option><option value="2026-07-28">2026-07-28</option><option value="2026-07-27">2026-07-27</option><option value="2026-07-26">2026-07-26</option><option value="2026-07-23">2026-07-23</option><option value="2026-07-22">2026-07-22</option><option value="2026-07-21">2026-07-21</option><option value="2026-07-20">2026-07-20</option><option value="2026-07-19">2026-07-19</option><option value="2026-07-16">2026-07-16</option><option value="2026-07-15">2026-07-15</option><option value="2026-07-14">2026-07-14</option><option value="2026-07-13">2026-07-13</option><option value="2026-07-12">2026-07-12</option><option value="2026-07-09">2026-07-09</option><option value="2026-07-08">2026-07-08</option><option value="2026-07-07">2026-07-07</option><option value="2026-07-06">2026-07-06</option><option value="2026-07-05">2026-07-05</option><option value="2026-07-02">2026-07-02</option><option value="2026-07-01">2026-07-01</option><option value="2026-06-30">2026-06-30</option><option value="2026-06-29">2026-06-29</option><option value="2026-06-28">2026-06-28</option><option value="2026-06-25">2026-06-25</option><option value="2026-06-24">2026-06-24</option><option value="2026-06-23">2026-06-23</option>    </select>
+    <input type="search" id="search" placeholder="搜索标题 / 摘要 / 作者..."/>
+    <select id="sortSel">
+      <option value="score">按综合分</option>
+      <option value="upvotes">按热度</option>
+      <option value="date">按发表时间</option>
+    </select>
+  </div>
+  <div class="filter-group"><span class="label">分类</span><span class="tabs" id="catTabs"></span></div>
+  <div class="filter-group"><span class="label">关键词</span><span class="tabs" id="kwTabs"></span></div>
+  <div class="meta-line" id="metaLine"></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()" title="关闭">×</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+const PAPERS = [{"abstract": "A latent recurrent language model applies a shared block of layers repeatedly, so one checkpoint can trade inference compute for accuracy by changing the loop count. At one loop, however, such models typically fall well short of a non-recurrent model of the same size, a one-loop tax that makes a separate non-recurrent model the better choice whenever latency matters. We present Elastic Latent Recurrence (ELR), a recipe for training looped language models without this tax. At one loop, an ELR model costs the same to serve as a non-recurrent model of the same size and, trained on the same data, reaches similar accuracy. Each additional loop then buys more accuracy for more inference compute. Three choices make this work: a gated state update with a learned step size, loop counts mixed within each optimizer update, and conditioning each pass on its loop index and budget. The first two preserve one-loop accuracy, and the third lowers loss at every additional loop. Mixed depths can be introduced late in pretraining to limit the added training cost, and with zero-initialized conditioning added at the switch, this late schedule reaches lower loss than mixed-depth training from scratch. In MoE models, reusing first-loop expert routes on later loops cuts mixed-depth update time by 11.7% with no measurable change in accuracy. At inference, keeping only the last loop\u0027s attention KV cache holds attention KV memory at its one-loop level while retaining most of the gain from additional loops. On 4B dense and 30B-A3B MoE hybrid models, ELR at one loop is 0.52 points below and 1.04 points above its matched baseline on a ten-task average, and four loops add 7.25 and 4.75 points. Carried through post-training, the recipe yields Koi-4B, a single checkpoint that scores an estimated 18 on the Artificial Analysis Intelligence Index at one loop, matching Qwen3.5-4B, and 29 at four loops.", "arxiv_id": "2610.12582", "arxiv_url": "https://arxiv.org/abs/2610.12582", "authors": ["Faisal Ladhak", "Shantanu Acharya", "Santiago Akle Serano", "Simeng Sun", "Boris Ginsburg", "Krishna C Puvvada"], "brief": "", "categories": ["cs.CL"], "github_repo": null, "github_stars": 0, "hf_url": "https://huggingface.co/papers/2610.12582", "impact_score": null, "is_agent": null, "is_top": true, "key_points": [], "keywords": [], "num_comments": 3, "on_hf": true, "organization": "NVIDIA", "pdf_url": "https://arxiv.org/pdf/2610.12582v1", "published_at": "2026-10-08", "score": 0.276, "selected_reasons": ["\u77e5\u540d\u673a\u6784: NVIDIA", "HF trending (4\u8d5e)"], "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.12582.png", "title": "One Model to Loop Them All: Elastic Latent Recurrence for Language Models", "tldr": null, "upvotes": 4, "what_it_is": null, "why_notable": null}, {"abstract": "Large foundation models have accelerated progress toward general-purpose agents that interact with humans and other agents through language and multimodal signals. However, robust multi-agent decision-making requires reasoning about what other agents know, intend, and are likely to do under partial observability. Current agentic systems often operate through prompt design, memory, or end-to-end behavioral shaping, but typically do not learn an explicit partner-state representation that can be reused as a decision variable across tasks. We introduce \\emph{mental-model-enabled agents}, a framework that equips an agent with a latent mental model of its counterpart, allowing it to infer hidden beliefs, intentions, and likely reactions from the observed history and use these inferences to guide action selection. Our method learns an amortized recursive Theory-of-Mind representation, with first- and second-order mental-state structure, jointly with a belief-conditioned reward model that evaluates candidate actions relative to the inferred partner state. A policy is then learned under this belief-aware signal, yielding an agent that can act independently at inference time while retaining the benefits of explicit partner modeling. We evaluate the same framework on both language-only and multimodal benchmarks. Across these settings, explicit mental-state modeling consistently improves interaction quality and Theory-of-Mind performance over base agentic systems, showing that structured partner modeling is a useful inductive bias for general multi-agent systems. Our code is publicly available at https://github.com/hananshafi/Mental-Models", "arxiv_id": "2610.12453", "arxiv_url": "https://arxiv.org/abs/2610.12453", "authors": ["Hanan Gani", "Lulu Shao", "Manmohan Chandraker"], "brief": "", "categories": ["cs.MA"], "github_repo": "https://github.com/hananshafi/Mental-Models", "github_stars": 3, "hf_url": "https://huggingface.co/papers/2610.12453", "impact_score": null, "is_agent": null, "is_top": true, "key_points": [], "keywords": [], "num_comments": 2, "on_hf": true, "organization": "University of California at San Diego", "pdf_url": "https://arxiv.org/pdf/2610.12453v1", "published_at": "2026-10-08", "score": 0.205, "selected_reasons": ["\u4e0e computer use / agent \u76f8\u5173", "HF trending (3\u8d5e)"], "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.12453.png", "title": "Mental-Models for Multi-Agent Systems", "tldr": null, "upvotes": 3, "what_it_is": null, "why_notable": null}, {"abstract": "Humans perceive far more in a scene than what is explicitly depicted: a single glance captures past causes and future trajectories; a quick peek determines if a vehicle can fit between two parked cars; a few seconds of video reveals who holds authority in a room; and a fleeting clip highlights subtle abstract patterns like unwritten rules or hidden labels. This capacity reflects a form of humanity\u0027s sixth sense: an intuitive reasoning mechanism that recovers implicit information beyond raw sensory perception. Crucially, this rapid, zero-shot visual intuition underpins everyday navigation and social interaction, making it a vital capability for Multimodal Large Language Models (MLLMs) deployed alongside people. Existing visual benchmarks, however, target either deliberate expert-level analysis in academic and mathematical domains or low-level perception, leaving the intuitive reasoning that people perform largely untested. To bridge this gap, we introduce Humanity\u0027s Sixth Sense (HSS), a benchmark for intuitive visual reasoning. HSS spans diverse image and video inputs, organizes items under a structured taxonomy, and pairs each with human-written prompts probing the implicit temporal, spatial, social, and abstract structure that people infer at a glance. Frontier MLLMs fall short of human performance: participants reach 93.1% accuracy, while the strongest model, GPT-6-astra, reaches only 53.6% even at maximum reasoning effort. Despite excelling in many complex tasks that require advanced perception and knowledge, current models still struggle significantly on these visual tasks that are intuitive for humans. We further explore agentic setup that apply dynamic visual manipulation to HSS, which narrows but does not close the gap. HSS establishes intuitive visual reasoning as a measurable axis and directs attention to a capability that scaling on current benchmarks has so far left behind.", "arxiv_id": "2610.08966", "arxiv_url": "https://arxiv.org/abs/2610.08966", "authors": ["Xingang Guo", "Jing Gu", "Brian Jang", "Renxiong Wang", "Utkarsh Tyagi", "Daniel Quigley", "Steven Li", "David Yan", "Daniel Yue Zhang", "Darvin Yi", "Forrest Huang", "HiJae Kim", "Tianyi Zhang", "Jared Lichtarge", "Jihua Huang", "Le Xue", "Manan Tomar", "Qiuyi Richard Zhang", "Ruofei Yu", "Seth Neel", "Yaning Hu", "Marcella Valentine", "Xinzhe Jiang", "Daniel Evans", "Chenguang Wang", "Dustin Tran", "Tong Zhao", "Yinfei Yang", "Yunzhong He"], "brief": "", "categories": ["cs.AI", "cs.MM"], "github_repo": null, "github_stars": 0, "hf_url": "https://huggingface.co/papers/2610.08966", "impact_score": null, "is_agent": null, "is_top": true, "key_points": [], "keywords": [], "num_comments": 2, "on_hf": true, "organization": "Scale AI", "pdf_url": "https://arxiv.org/pdf/2610.08966v2", "published_at": "2026-10-06", "score": 0.186, "selected_reasons": ["\u4e0e computer use / agent \u76f8\u5173", "HF trending (2\u8d5e)"], "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.08966.png", "title": "Humanity\u0027s Sixth Sense: Benchmarking Intuitive Visual Reasoning in Multimodal Models", "tldr": null, "upvotes": 2, "what_it_is": null, "why_notable": null}, {"abstract": "Speculative decoding accelerates large language model inference by using a lightweight drafter to propose multiple tokens that are subsequently verified in parallel by the target model. Recent diffusion-based drafters make this paradigm particularly attractive: deep attention-based neural backbones provide strong predictions, while drafting multiple future positions in parallel avoids the sequential cost of autoregressive generation. This parallelism, however, comes at a cost. Tokens within a draft block are predicted without access to the realized identities of preceding draft tokens, removing intra-block dependencies that would naturally be available under autoregressive generation. We introduce DCOCO (DFlash Contextual Corrector), a lightweight mechanism that restores these dependencies while preserving parallel drafting. Rather than committing to each position\u0027s top prediction, DCOCO retains multiple candidate tokens and evaluates their contextual compatibility across adjacent draft positions in parallel, enabling contextually informed token selection at low additional cost. Across four verifier backbones and ten benchmarks, DCOCO achieves the highest average throughput in every evaluated configuration, spanning greedy and stochastic decoding with and without extended reasoning, with speedups of up to 6.6x over vanilla decoding. Its advantage persists under concurrent serving: DCOCO outperforms the strongest competing method by 6-23% across 4-32 concurrent requests, while other sequential correctors fall below uncorrected DFlash at these loads. These results demonstrate that recovering intra-block dependencies through parallel contextual scoring delivers consistent acceleration across decoding regimes and serving loads.", "arxiv_id": "2610.12570", "arxiv_url": "https://arxiv.org/abs/2610.12570", "authors": ["Roy Eisenstadt", "Harel Lidar", "Tal Gonen", "Omer Luxembourg", "Itamar Zimerman", "Lior Wolf", "Eli David", "Ilan Naiman"], "brief": "", "categories": ["cs.CL"], "github_repo": "https://github.com/two-delta/DCOCO", "github_stars": 20, "hf_url": "https://huggingface.co/papers/2610.12570", "impact_score": null, "is_agent": null, "is_top": true, "key_points": [], "keywords": [], "num_comments": 2, "on_hf": true, "organization": null, "pdf_url": "https://arxiv.org/pdf/2610.12570v1", "published_at": "2026-10-08", "score": 0.114, "selected_reasons": ["HF trending (21\u8d5e)"], "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.12570.png", "title": "Contextual Correction of Parallel Draftsfor Speculative Decoding", "tldr": null, "upvotes": 21, "what_it_is": null, "why_notable": null}, {"abstract": "Recent GPU kernel optimization agents retain what they learn in knowledge bases or as distilled skills. Kernel benchmarks score each attempt\u0027s implementation for correctness and speed but leave the reuse value of retained experience unmeasured. We introduce MetaKernelBench, which measures whether experience distilled from an attempt in one kernel domain-specific language (DSL) improves a fresh attempt at the same problem in another. Its 74 problems are fused subgraphs in six families, each posed as a pair of CuTe DSL and TIRx variants that differ only in the DSL. The agent first attempts each variant solo and is instructed to distill what it learns into a natural-language skill, which is transferred whether or not the source attempt passes verification. The skill is the only extra input to a skill-conditioned attempt by the same model in the other DSL. We compare each skill-conditioned attempt with the solo attempt on the same variant under matched per-attempt budgets, scoring correctness and end-to-end runtime. Across six models and both directions, paired lift over solo attempts ranges from -19% to +29%. Four models gain in both directions, yet regressions occur on 16% to 45% of problems in every model and direction. Outcomes follow the source attempt\u0027s result relative to the target\u0027s solo attempt rather than source success alone, improving in 71% of comparisons when the source stands above and regressing in 54% when it stands below. MetaKernelBench complements implementation-quality metrics by measuring same-problem cross-DSL kernel knowledge transfer.", "arxiv_id": "2610.05014", "arxiv_url": "https://arxiv.org/abs/2610.05014", "authors": ["Xueyi Chen", "Shiyu Liu", "Xin Jin", "Yuhua Zheng", "Xin Li", "Haolei Bai", "Junhan Zhu", "Huan Wang"], "brief": "", "categories": ["cs.LG"], "github_repo": "https://github.com/YIGE24/MetaKernelBench", "github_stars": 4, "hf_url": "https://huggingface.co/papers/2610.05014", "impact_score": null, "is_agent": null, "is_top": true, "key_points": [], "keywords": [], "num_comments": 2, "on_hf": true, "organization": "Westlake ENCODE Lab", "pdf_url": "https://arxiv.org/pdf/2610.05014v1", "published_at": "2026-10-04", "score": 0.095, "selected_reasons": ["HF trending (16\u8d5e)"], "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.05014.png", "title": "MetaKernelBench: Measuring GPU Kernel Knowledge Transfer Beyond Code", "tldr": null, "upvotes": 16, "what_it_is": null, "why_notable": null}, {"abstract": "Vision-and-Language Navigation (VLN) has largely focused on a single agent following a single instruction, yet many real-world applications require teams of robots to tackle tasks beyond the capabilities of any individual agent. We present Systematic Multi-Agent Vision-and-Language Navigation, providing, to our knowledge, the first systematic formalization of multi-agent VLN as a constrained coordination problem: each mission consists of subtasks carrying dependency and resource constraints (presence locks and holding chains). A verified four-stage crafting pipeline instantiates the task as MAVLN, comprising 11,724 episodes across 145 scenes with teams of up to four agents under three instruction regimes, accompanied by tailored constraint-aware metrics. We further present TRISS, a coordination-ready navigation system coupling an LLM-based subtask scheduler, a shared topological memory that turns each agent\u0027s exploration into team knowledge, and a conflict-aware execution mechanism that realizes simultaneous intentions as collision-free routes. Extensive experiments establish TRISS as a comprehensive baseline and reveal substantial room for improvement across scheduling, planning, and execution, highlighting the challenges of coordinating under MAVLN task constraints. Project page: https://xyz9911.github.io/mavln.", "arxiv_id": "2609.35965", "arxiv_url": "https://arxiv.org/abs/2609.35965", "authors": ["Yunzhe Xu", "Zhe Liu"], "brief": "", "categories": ["cs.CV", "cs.AI", "cs.RO"], "github_repo": "https://github.com/xyz9911/MA-VLN", "github_stars": 5, "hf_url": "https://huggingface.co/papers/2609.35965", "impact_score": null, "is_agent": null, "is_top": true, "key_points": [], "keywords": [], "num_comments": 1, "on_hf": true, "organization": "Shanghai Jiao Tong University", "pdf_url": "https://arxiv.org/pdf/2609.35965v2", "published_at": "2026-09-28", "score": 0.08, "selected_reasons": ["HF trending (9\u8d5e)"], "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2609.35965.png", "title": "Systematic Multi-Agent Vision-and-Language Navigation: Formulation, Benchmark, and Method", "tldr": null, "upvotes": 9, "what_it_is": null, "why_notable": null}, {"abstract": "Mixture-of-Experts (MoE) transformers scale capacity by activating only a few experts per token, but this sparsity creates a hidden reliability problem: when routing is imperfect, load-balanced models may send tokens to experts that are insufficiently trained for the assigned inputs. We propose Distributionally Robust MoE Training (DRMoET), a drop-in objective that treats layer-wise experts as endogenous robustness groups and optimizes high-loss routing outcomes rather than merely equalizing traffic. DRMoET updates a per-layer expert distribution by an entropy-regularized softmax rule on EMA-smoothed, activation-weighted expert losses, strengthening plausible non-top routing paths while preserving standard MoE computation. Under the FLAME-MoE recipe at 746M-total and 10.3B-total scales, DRMoET improves downstream averages over both standard FLAME-MoE and auxiliary-loss-free balancing. At 10.3B total parameters and 67B training tokens, DRMoET improves the seven-task average from 0.6625 to 0.6767, while the auxiliary-loss-free baseline achieves 0.6431. Mechanistic analyses show lower expert-loss variance with nearly unchanged mean loss, 4.3% lower excess loss under forced mid-$k$ misrouting, and improved domain-expert specialization. These results position routing robustness-not only utilization balance-as a practical objective for reliable sparse MoE scaling. Project page and code are available at: https://drmoet.github.io/.", "arxiv_id": "2610.07207", "arxiv_url": "https://arxiv.org/abs/2610.07207", "authors": ["Xin Teng", "Muxiao Li", "Hongyi Wen"], "brief": "", "categories": ["cs.LG", "cs.AI"], "github_repo": "https://github.com/MAPS-research/DRMoET", "github_stars": 1, "hf_url": "https://huggingface.co/papers/2610.07207", "impact_score": null, "is_agent": null, "is_top": true, "key_points": [], "keywords": [], "num_comments": 2, "on_hf": true, "organization": "New York University", "pdf_url": "https://arxiv.org/pdf/2610.07207v1", "published_at": "2026-10-05", "score": 0.055, "selected_reasons": ["HF trending (4\u8d5e)"], "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.07207.png", "title": "Distributionally Robust Mixture-of-Experts Training", "tldr": null, "upvotes": 4, "what_it_is": null, "why_notable": null}, {"abstract": "Video-language models commonly assume that more temporal observations lead to more reliable reasoning. We question this assumption and argue that the key challenge is not merely processing more video frames efficiently, but learning to reason reliably under limited temporal evidence. We propose SAVER, a dense-to-sparse post-training framework that uses dense video views as training-time references for sparse-frame inference. During reinforcement post-training, paired dense and sparse views are optimized with grounding rewards and a reliability-gated reference reward, encouraging sparse view predictions to preserve task-relevant temporal evidence. Notably, SAVER is trained only on 1,250 randomly sampled temporal grounding examples, without using any video question answering annotations. Across three temporal grounding benchmarks and six video question-answering benchmarks, SAVER consistently improves performance across frame budgets. In particular, SAVER can match or surpass dense-frame Qwen3.5 baselines while using substantially fewer frames. These results show that temporal grounding can serve as an effective evidence-localization proxy for learning sparse video reasoning that transfers to broader video understanding tasks.", "arxiv_id": "2610.10893", "arxiv_url": "https://arxiv.org/abs/2610.10893", "authors": ["Wenfang Sun", "Yingjun Du", "Cees G. M. Snoek"], "brief": "", "categories": ["cs.CV"], "github_repo": "https://github.com/lmsdss/SAVER", "github_stars": 1, "hf_url": "https://huggingface.co/papers/2610.10893", "impact_score": null, "is_agent": null, "is_top": true, "key_points": [], "keywords": [], "num_comments": 2, "on_hf": true, "organization": "University of Amsterdam", "pdf_url": "https://arxiv.org/pdf/2610.10893v1", "published_at": "2026-10-07", "score": 0.055, "selected_reasons": ["HF trending (4\u8d5e)"], "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.10893.png", "title": "Less from More: Reinforcing Sparse Video Reasoning from Dense References", "tldr": null, "upvotes": 4, "what_it_is": null, "why_notable": null}, {"abstract": "Large language model (LLM) assistants are being deployed to clinicians across health systems, and judgments about their readiness rest largely on benchmark scores, most of them derived from examination questions or curated cases. A benchmark predicts performance in deployment only to the extent that its items resemble real use, yet whether benchmarks reflect the work these systems receive has rarely been measured. Here we analyze 127,833 queries sent by 6,342 physicians, advanced practice providers and nurses in 35 specialties to an institutional assistant during an eight-month roll-out. We characterize each query with RCQ-Map, a clinician-validated framework grounded in taxonomies of clinical questions and of LLM evaluation, which records its task, intent, answerability, missing information and potential harm. Documentation and administration (36.2%) and knowledge retrieval (28.9%) made up nearly two-thirds of use, and diagnosis 3.7%; more than a third of queries could not be answered well as posed. Applying RCQ-Map to 58 public benchmarks drawn from major evaluation suites and frontier model reports, which we assemble into the Clinical AI Benchmark Atlas, showed that the median benchmark contained no documentation requests and shared 31% of the task mix of real use, less than an even spread across task categories would. Benchmarks in suites designed to resemble clinical practice were individually no closer to real use than those used in frontier model reports. Benchmark scores therefore say little about how clinical AI performs on most of the work it is actually given, and evaluation should be matched to real clinical use.", "arxiv_id": "2610.11069", "arxiv_url": "https://arxiv.org/abs/2610.11069", "authors": ["Krithik Vishwanath", "Haitong Lin", "Anton Alyakin", "Jin Vivian Lee", "D. Brock Hewitt", "Jie J. Yao", "William Robert Small", "Hammad A. Khan", "Cordelia Orillac", "Aakaash Varma", "Brandon Ye", "Daniel Alexander Alber", "Gustavo Stolovitzky", "Batia Wiesenfeld", "Oded Nov", "Wei Wu", "Kang Zhang", "Yindalon Aphinyanaphongs", "Tim Requarth", "Eric Karl Oermann", "The International Digital Twin Consortium in Healthcare", "Medicine"], "brief": "", "categories": ["cs.CL"], "github_repo": "https://github.com/nyuolab/RCQ-Map", "github_stars": 2, "hf_url": "https://huggingface.co/papers/2610.11069", "impact_score": null, "is_agent": null, "is_top": true, "key_points": [], "keywords": [], "num_comments": 2, "on_hf": true, "organization": "NYU Langone Health OLAB", "pdf_url": "https://arxiv.org/pdf/2610.11069v1", "published_at": "2026-10-08", "score": 0.053, "selected_reasons": ["HF trending (3\u8d5e)"], "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.11069.png", "title": "Clinician use of language models diverges from how the models are evaluated", "tldr": null, "upvotes": 3, "what_it_is": null, "why_notable": null}, {"abstract": "Massive activations, residual-stream coordinates with magnitudes far larger than typical activations, are associated with attention sinks in transformers, but how their scale is regulated during training remains incompletely understood. Combining training-trajectory analyses and controlled interventions, we trace their emergence, growth, and consolidation. Sink-carrying channels vary across random seeds but stabilize early within each run. Over longer training, surrounding channels erode and the sink concentrates onto a few redundant carriers. Across ablations, gradient attenuation follows the sink token\u0027s collective root-mean-square magnitude rather than any single channel, making collective scale central to understanding their effects. Our central result is that weight decay causally controls the turnover of global activation scale. In controlled continuations, removing decay near the peak allows this scale to keep rising, whereas retaining it produces decline even at constant learning rate. We develop a balance model for the rise and peak of massive-activation magnitude, in which AdamW-preconditioned growth opposes weight decay. Sweeping the decay coefficient $\u03bb$ shifts peak timing approximately log-linearly and yields peak magnitudes scaling approximately as $\u03bb^{-1/2}$, consistent with this balance. Optimizer measurements further show that preconditioning sustains the large-channel cohort against decay even when raw maintaining forces are too small to do so. Together, these findings connect the observed life cycle to scale-regulating training dynamics and establish weight decay as a training-time lever on activation magnitude.", "arxiv_id": "2610.00423", "arxiv_url": "https://arxiv.org/abs/2610.00423", "authors": ["S. Aaron McClendon", "Jorge Gallego-Feliciano", "Antonios Saravanos"], "brief": "", "categories": ["cs.LG", "cs.AI"], "github_repo": "https://github.com/apd-smcclendon/massive_activations_2", "github_stars": 1, "hf_url": "https://huggingface.co/papers/2610.00423", "impact_score": null, "is_agent": null, "is_top": true, "key_points": [], "keywords": [], "num_comments": 3, "on_hf": true, "organization": "Aimpoint Digital", "pdf_url": "https://arxiv.org/pdf/2610.00423v2", "published_at": "2026-09-30", "score": 0.051, "selected_reasons": ["HF trending (3\u8d5e)"], "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.00423.png", "title": "The Life Cycle of a Massive Activation: Stochastic Birth, Weight-Decay-Driven Growth, and Competitive Consolidation", "tldr": null, "upvotes": 3, "what_it_is": null, "why_notable": null}, {"abstract": "Continual learning (CL) seeks to adapt pretrained models while preserving prior capabilities. Yet the tasks supplied for preservation cover only part of what a model knows, while forgetting can extend beyond them. Recent work shows that language models can supplement this limited evidence by generating useful replay without access to their original training data. This raises a question about self-preservation: can a model help choose preservation targets that protect its own capabilities more broadly? To study this question, we organize task descriptions and their examples into Task Banks, whose entries can be selected and combined to guide replay generation by a frozen model. Continual instruction tuning with Qwen models of varying sizes yields three findings. First, the new task and learning rate shape which prior capabilities degrade, while tracking previously correct answers reveals losses that average accuracy can conceal. Second, generated replay reduces forgetting on tasks outside the bank. Combining partial banks strengthens this protection, improving mean retention of previously correct answers over either bank alone across the tested sizes. Third, the model can also help choose replay targets: selection informed by the new task improves mean held-out retention over random selection at 4B, with similar new-task gains, although smaller models show no corresponding advantage. Under a fixed example budget, however, replacing new-task examples with replay improves preservation at the cost of smaller new-task gains. Together, these findings show that models can support broader self-preservation by generating replay data and, in some settings, choosing which tasks to replay.", "arxiv_id": "2610.12602", "arxiv_url": "https://arxiv.org/abs/2610.12602", "authors": ["Dongkyu Cho", "Rumi Chunara", "Ali Behrouz"], "brief": "", "categories": ["cs.CL", "cs.AI"], "github_repo": "https://github.com/umamicode/self-preservation", "github_stars": 0, "hf_url": "https://huggingface.co/papers/2610.12602", "impact_score": null, "is_agent": null, "is_top": true, "key_points": [], "keywords": [], "num_comments": 2, "on_hf": true, "organization": "New York University", "pdf_url": "https://arxiv.org/pdf/2610.12602v1", "published_at": "2026-10-08", "score": 0.043, "selected_reasons": ["HF trending (3\u8d5e)"], "thumbnail": "https://cdn-thumbnails.huggingface.co/social-thumbnails/papers/2610.12602.png", "title": "Self-Preservation in Language Models", "tldr": null, "upvotes": 3, "what_it_is": null, "why_notable": null}];
+let state = { category:"ALL", keyword:"ALL", sort:"score", q:"" };
+
+// ---- 统计 + 长尾过滤 ----
+function counted(field){
+  const m = {};
+  PAPERS.forEach(p => (p[field]||[]).forEach(v => { m[v]=(m[v]||0)+1; }));
+  return m;
+}
+function topKeys(map, {min=1, limit=99}={}){
+  return Object.entries(map).filter(([,c])=>c>=min).sort((a,b)=>b[1]-a[1]).slice(0,limit).map(([k])=>k);
+}
+
+function renderTabRow(elId, items, counts, dim, cls){
+  const el = document.getElementById(elId);
+  const cur = state[dim];
+  const mk = (val,label,n)=>`<span class="tab ${cls} ${val===cur?'active':''}" data-dim="${dim}" data-val="${val}">${label}${n!=null?` (${n})`:''}</span>`;
+  el.innerHTML = mk("ALL","全部",PAPERS.length) + items.map(v=>mk(v,v,counts[v])).join("");
+  el.querySelectorAll(".tab").forEach(t=>{
+    t.onclick = ()=>{ state[t.dataset.dim]=t.dataset.val; renderTabs(); render(); };
+  });
+}
+function renderTabs(){
+  const catCounts = counted("categories");
+  const kwCounts = counted("keywords");
+  // 分类：长尾隐藏（出现>=3次的，最多12个）
+  const cats = topKeys(catCounts, {min:3, limit:12});
+  // 关键词：长尾隐藏（出现>=2次的，最多18个）
+  const kws = topKeys(kwCounts, {min:2, limit:18});
+  renderTabRow("catTabs", cats, catCounts, "category", "cat");
+  renderTabRow("kwTabs", kws, kwCounts, "keyword", "kw");
+}
+
+function matchFilter(p){
+  if (state.category!=="ALL" && !(p.categories||[]).includes(state.category)) return false;
+  if (state.keyword!=="ALL" && !(p.keywords||[]).includes(state.keyword)) return false;
+  if (state.q){
+    const q = state.q.toLowerCase();
+    const hay = [p.title, p.brief, p.abstract, p.what_it_is, p.why_notable, (p.authors||[]).join(" "), (p.keywords||[]).join(" ")].join(" ").toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  return true;
+}
+function sortPapers(arr){
+  const s = state.sort;
+  return arr.slice().sort((a,b)=>{
+    if (s==="upvotes") return (b.upvotes||0)-(a.upvotes||0);
+    if (s==="date") return (b.published_at||"").localeCompare(a.published_at||"");
+    return (b.score||0)-(a.score||0);
+  });
+}
+
+function metaBlock(p){
+  const authors = (p.authors||[]).slice(0,4).join(", ") + ((p.authors||[]).length>4 ? ` 等 ${p.authors.length} 人` : "");
+  const cats = (p.categories||[]).map(c=>`<span>${c}</span>`).join("");
+  const kws = (p.keywords||[]).map(k=>`<span>${k}</span>`).join("");
+  const hf = p.on_hf ? `<a href="${p.hf_url}" target="_blank">HF</a>` : "";
+  const links = `<div class="links"><a onclick="openModal('${p.arxiv_id}')">🔍 详情</a><a href="${p.arxiv_url}" target="_blank">arXiv</a>${hf}<a href="${p.pdf_url}" target="_blank">PDF</a>${p.github_repo?`<a href="${p.github_repo}" target="_blank">GitHub</a>`:""}</div>`;
+  return `
+    <div class="row">👤 ${authors}</div>
+    <div class="row">📅 ${p.published_at}${p.organization?` ｜ 🏛 ${p.organization}`:""}</div>
+    <div class="tags">${cats}</div>
+    ${kws?`<div class="kws">${kws}</div>`:""}
+    <div class="stats">👍 <b>${p.upvotes}</b> ｜ ⭐ <b>${p.github_stars}</b> ｜ 分 <b>${p.score}</b>${p.impact_score!=null?` ｜ 影响力 <b>${p.impact_score}/10</b>`:""}</div>
+    ${links}`;
+}
+
+function topCard(p, idx){
+  const thumb = p.thumbnail ? `<img class="thumb" src="${p.thumbnail}" loading="lazy" onerror="this.style.display='none'"/>` : "";
+  const kp = (p.key_points||[]).map(k=>`<li>${k}</li>`).join("");
+  return `<div class="card top" onclick="cardClick(event,'${p.arxiv_id}')">
+    <h3><span class="rank">#${idx}</span><span class="badge">TOP</span><span class="title-link">${p.title}</span></h3>
+    ${thumb}
+    ${p.what_it_is?`<div class="sec"><b>① 核心内容</b>${p.what_it_is}</div>`:""}
+    ${kp?`<div class="sec"><b>② 关键技术/数据</b><ul>${kp}</ul></div>`:""}
+    ${p.why_notable?`<div class="sec"><b>③ 为何值得关注</b>${p.why_notable}</div>`:""}
+    ${metaBlock(p)}
+  </div>`;
+}
+function restCard(p, idx){
+  const summary = p.tldr || p.brief || "（暂无中文总结）";
+  const thumb = p.thumbnail ? `<img class="thumb" src="${p.thumbnail}" loading="lazy" onerror="this.style.display='none'"/>` : "";
+  return `<div class="card" onclick="cardClick(event,'${p.arxiv_id}')">
+    <h3><span class="rank">#${idx}</span><span class="title-link">${p.title}</span></h3>
+    ${thumb}
+    <div class="summary">${summary}</div>
+    ${metaBlock(p)}
+  </div>`;
+}
+
+function render(){
+  const filtered = sortPapers(PAPERS.filter(matchFilter));
+  const grid = document.getElementById("grid");
+  grid.innerHTML = filtered.length
+    ? filtered.map((p,i)=> p.is_top ? topCard(p,i+1) : restCard(p,i+1)).join("")
+    : `<div class="empty">该筛选条件下暂无论文</div>`;
+  const nTop = filtered.filter(p=>p.is_top).length;
+  document.getElementById("metaLine").textContent = `当前显示 ${filtered.length} 篇（前 ${nTop} 篇为精选四段式，其余为中文总结）`;
+}
+
+document.getElementById("sortSel").onchange = e=>{ state.sort=e.target.value; render(); };
+document.getElementById("search").oninput = e=>{ state.q=e.target.value; render(); };
+
+// ---- 详情弹窗：原始英文摘要 + PDF 预览 ----
+const BY_ID = {};
+PAPERS.forEach(p => { BY_ID[p.arxiv_id] = p; });
+
+// 点卡片任意空白处打开详情；点到链接(a)则不弹窗，走链接本身
+function cardClick(e, id){
+  if (e.target.closest("a")) return;
+  openModal(id);
+}
+
+function openModal(id){
+  const p = BY_ID[id];
+  if (!p) return;
+  const authors = (p.authors||[]).slice(0,10).join(", ") + ((p.authors||[]).length>10 ? ` 等 ${p.authors.length} 人` : "");
+  const kp = (p.key_points||[]).map(k=>`<li>${k}</li>`).join("");
+  let four = "";
+  if (p.what_it_is || kp || p.why_notable){
+    four = `${p.what_it_is?`<div class="sec"><b>① 核心内容</b>${p.what_it_is}</div>`:""}
+      ${kp?`<div class="sec"><b>② 关键技术/数据</b><ul>${kp}</ul></div>`:""}
+      ${p.why_notable?`<div class="sec"><b>③ 为何值得关注</b>${p.why_notable}</div>`:""}`;
+  } else if (p.tldr){
+    four = `<div class="summary">${p.tldr}</div>`;
+  }
+  const hf = p.on_hf ? `<a href="${p.hf_url}" target="_blank">HuggingFace</a>` : "";
+  document.getElementById("modalContent").innerHTML = `
+    <h2>${p.title}</h2>
+    <div class="row">👤 ${authors}</div>
+    <div class="row">📅 ${p.published_at||""}${p.organization?` ｜ 🏛 ${p.organization}`:""} ｜ ${(p.categories||[]).join(", ")}</div>
+    ${four}
+    <div class="lbl">Abstract（原始英文摘要）</div>
+    <div class="abs">${p.abstract || "（无摘要）"}</div>
+    <div class="lbl">PDF 预览</div>
+    <div class="pdfwrap"><iframe src="${p.pdf_url}" loading="lazy"></iframe></div>
+    <div class="pdfhint">若预览空白（部分来源禁止内嵌），点下方「在新标签打开 PDF」。</div>
+    <div class="links" style="margin-top:12px;">
+      <a href="${p.arxiv_url}" target="_blank">arXiv 页面</a>${hf}
+      <a href="${p.pdf_url}" target="_blank">在新标签打开 PDF</a>
+      ${p.github_repo?`<a href="${p.github_repo}" target="_blank">GitHub</a>`:""}
+    </div>`;
+  document.getElementById("modal").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeModal(){
+  document.getElementById("modal").classList.remove("open");
+  document.body.style.overflow = "";
+  document.getElementById("modalContent").innerHTML = "";  // 停止 PDF 加载
+}
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeModal(); });
+
+renderTabs(); render();
+</script>
+</body>
+</html>
